@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-server": "nodemon ./server/server",
-    "dev-client": "vite",
+    "dev-client": "vite client",
     "build": "vite build",
     "preview": "vite preview"
   },
