@@ -4,11 +4,12 @@ const { Schema } = mongoose;
 
 const goalSchema = new Schema(
   {
-    text: String,
+    text: {
+      type: String,
+      required: [true, 'please add text value'],
+    },
   },
   { timestamps: true }
 );
 
-const goalModel = mongoose.model('goals', goalSchema, 'goals');
-
-export default goalModel;
+export default mongoose.model('goals', goalSchema, 'goals');

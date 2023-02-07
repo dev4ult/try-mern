@@ -36,9 +36,7 @@ connectDB();
 app.get(
   '/',
   asyncHandler(async (req, res) => {
-    res.send('Hello World');
-    const data = await goalModel.find({});
-    console.log(data);
+    res.status(200).send('Hello World');
   })
 );
 
