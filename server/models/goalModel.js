@@ -1,15 +1,18 @@
-import mongoose, { mongo } from 'mongoose';
-
-const { Schema } = mongoose;
+import mongoose, { Schema } from 'mongoose';
 
 const goalSchema = new Schema(
   {
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'please add a user'],
+      ref: 'User',
+    },
     text: {
       type: String,
-      required: [true, 'please add text value'],
+      required: [true, 'please add a text'],
     },
   },
   { timestamps: true }
 );
 
-export default mongoose.model('goals', goalSchema, 'goals');
+export default mongoose.model('Goal', goalSchema);
