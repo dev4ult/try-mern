@@ -9,10 +9,9 @@ import errorHandler from './middleware/errorMiddleware.js';
 
 import asyncHandler from 'express-async-handler';
 
-import goalModel from './models/goalModel.js';
-
 // ROUTES
 import goalRoutes from './routes/goalRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 const app = express();
 
@@ -41,6 +40,7 @@ app.get(
 );
 
 app.use('/api/goals', goalRoutes);
+app.use('/api/users', userRoutes);
 
 app.use(errorHandler);
 
