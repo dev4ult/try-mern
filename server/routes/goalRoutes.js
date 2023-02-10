@@ -1,10 +1,10 @@
 import express from 'express';
-import { getGoals, postGoals, updateGoals, deleteGoals, allGoals } from '../controllers/goalController.js';
-
+import { getGoals, updateGoals, deleteGoals, allGoals, setGoals } from '../controllers/goalController.js';
+import { authenticate } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
-router.route('/').get(allGoals).post(postGoals);
+router.route('/').get(authenticate, getGoals).post(authenticate, setGoals);
 
-router.route('/:id').get(getGoals).delete(deleteGoals).put(updateGoals);
+router.route('/:id').delete(authenticate, deleteGoals).put(authenticate, updateGoals);
 
 export default router;

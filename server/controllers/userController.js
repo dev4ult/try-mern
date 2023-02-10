@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.PUBLIC_KEY_JWT, {});
+  return jwt.sign({ id }, process.env.JWT_KEY, { expiresIn: '30d' });
 };
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -26,9 +26,16 @@ const registerUser = asyncHandler(async (req, res) => {
   const salt = await bcrypt.genSalt();
   const hashedPass = await bcrypt.hash(password, salt);
 
-  const user = await userModel.create({ name, email, password: hashedPass });
+  const user = await userModel.create({
+    name,
+    email,
+    password: hashedPass,
+  });
   if (user) {
-    res.status(200).json(user);
+    res.status(200).json({
+      ...user,
+      token: createToken(user._id),
+    });
   } else {
     res.status(400);
     throw new Error('Invalid data');
@@ -38,27 +45,27 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    res.status(400);
-    throw new Error('Please add all fields');
-  }
-
   const user = await userModel.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.redirect('/api/users/profile');
+    res.status(200).json({ user, token: createToken(user._id) });
   } else {
     res.status(400);
     throw new Error('Invalid email or password');
   }
 });
 
-const getUser = asyncHandler(async (req, res) => {
-  res.send('get one user');
+const userProfile = asyncHandler(async (req, res) => {
+  const { _id, name, email } = await userModel.findById(req.user.id);
+  res.status(200).json({
+    id: _id,
+    name,
+    email,
+  });
 });
 
 const updateUser = asyncHandler(async (req, res) => {
   res.send('update user');
 });
 
-export { registerUser, loginUser, getUser, updateUser };
+export { registerUser, loginUser, userProfile, updateUser };
