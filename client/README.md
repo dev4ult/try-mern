@@ -7,7 +7,6 @@ Project Structure
 Development Tools / Framework
 
 - React JS
-- Tailwind
 - Chakra UI
 - Framer Motion
 

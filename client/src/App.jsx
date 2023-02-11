@@ -9,7 +9,7 @@ import Header from './components/Header';
 function App() {
   return (
     <Router>
-      <Box mx={'auto'} minH={'100vh'} padding={'5'}>
+      <Box className="App" mx={'auto'} minH={'100vh'} padding={'2'}>
         <Header />
         <Routes>
           <Route path="/" element={<Dashboard />}></Route>

@@ -11,6 +11,5 @@ Development Tools / Framework
 - Express JS
 - React JS
 - Node JS
-- Tailwind
 - Chakra UI
 - Framer Motion
