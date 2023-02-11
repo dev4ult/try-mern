@@ -4,11 +4,13 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
 import { Box } from '@chakra-ui/react';
+import Header from './components/Header';
 
 function App() {
   return (
     <Router>
       <Box mx={'auto'} minH={'100vh'} padding={'5'}>
+        <Header />
         <Routes>
           <Route path="/" element={<Dashboard />}></Route>
           <Route path="/login" element={<Login />}></Route>

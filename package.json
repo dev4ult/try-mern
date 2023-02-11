@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@chakra-ui/react": "^2.4.9",
+    "@emotion/styled": "^11.10.5",
     "@reduxjs/toolkit": "^1.9.2",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
