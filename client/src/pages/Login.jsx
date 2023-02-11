@@ -38,7 +38,7 @@ function login() {
             <ShortFormControl label="Password" type="password" value={password} onChange={handleChange} />
           </Stack>
           <Button type="submit" w="full" mt="10" bgColor="black" color="white" _hover={`bgColor: black`} _active={'bgColor: black'}>
-            SIGNUP
+            LOGIN
           </Button>
         </form>
       </Box>
