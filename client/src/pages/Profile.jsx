@@ -9,8 +9,8 @@ function Profile() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: user.name,
-    email: user.email,
+    name: '',
+    email: '',
   });
 
   const { name, email } = formData;
@@ -18,6 +18,11 @@ function Profile() {
   useEffect(() => {
     if (!user) {
       navigate('/login');
+    } else {
+      setFormData({
+        name: user.name,
+        email: user.email,
+      });
     }
   }, [user]);
 

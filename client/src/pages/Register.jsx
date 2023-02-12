@@ -1,10 +1,11 @@
-import { Heading, Container, Button, Box, Stack, Divider, Text, Spinner } from '@chakra-ui/react';
+import { Heading, Container, Button, Stack, Divider, Text, Spinner, shouldForwardProp, chakra } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { register, reset } from '../features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import ShortFormControl from '../components/ShortFormControl';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { motion, isValidMotionProp } from 'framer-motion';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -57,8 +58,8 @@ function Register() {
   }
 
   return (
-    <Container maxW="5xl" display="flex" alignItems="center" justifyContent="center" py="4" minH="100vh">
-      <Box shadow="md" p="8" maxW="2xl" margin="auto" flexBasis="3xl">
+    <Container maxW="5xl" display="flex" alignItems="center" justifyContent="center" py="4" minH="85vh">
+      <ChakraBox initial={{ y: 20 }} animate={{ y: 0 }} shadow="md" p="8" maxW="2xl" margin="auto" flexBasis="3xl" borderWidth="1px">
         <Heading as="h3" size="lg" textAlign="center" mb="5">
           Register
         </Heading>
@@ -78,13 +79,17 @@ function Register() {
               <ShortFormControl label="Password Confirmation" type="password" name="password2" value={password2} onChange={handleChange} />
             </Stack>
           </Stack>
-          <Button type="submit" w="full" mt="10" bgColor="black" color="white" _hover={`bgColor: black`} _active={'bgColor: black'}>
+          <Button type="submit" w="full" mt="10" bgColor="black" color="white" _hover={{ bgColor: 'black' }} _active={{ bgColor: 'black' }}>
             SIGNUP
           </Button>
         </form>
-      </Box>
+      </ChakraBox>
     </Container>
   );
 }
+
+const ChakraBox = chakra(motion.div, {
+  shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),
+});
 
 export default Register;

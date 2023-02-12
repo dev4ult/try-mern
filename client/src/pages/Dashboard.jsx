@@ -1,12 +1,12 @@
-import { Box, Button, Container, Flex, Heading, Spinner, Text } from '@chakra-ui/react';
+import { Button, Container, Spinner, Text, shouldForwardProp, chakra } from '@chakra-ui/react';
 import { everyoneGoals } from '../features/goal/goalSlice';
 import GoalCard from '../components/GoalCard';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect } from 'react';
+import { motion, isValidMotionProp } from 'framer-motion';
 
 function Dashboard() {
-  const { goals, isLoading, isError, isSuccesfull, message } = useSelector((state) => state.goal);
+  const { goals, isLoading } = useSelector((state) => state.goal);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -44,11 +44,24 @@ function Dashboard() {
       <Button rounded="sm" color="white" colorScheme="blackAlpha">
         New Goal
       </Button>
-      <Flex flexWrap="wrap" gap="15px" mt="5">
+      <ChakraFlex variants={container} initial="hidden" animate="show" display="flex" flexWrap="wrap" gap="15px" mt="5">
         {mapGoalCards()}
-      </Flex>
+      </ChakraFlex>
     </Container>
   );
 }
+
+const ChakraFlex = chakra(motion.div, {
+  shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),
+});
+
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
 
 export default Dashboard;

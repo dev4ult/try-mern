@@ -28,7 +28,7 @@ const Header = () => {
               <NavLink as={RTDLink} to="/profile">
                 <IoPersonCircle /> Profile
               </NavLink>
-              <Button onClick={handleLogout} leftIcon={<IoLogOut />} color="white" bgColor={'black'} _hover={'bgColor: gray'} _active={'bgColor: black'}>
+              <Button onClick={handleLogout} leftIcon={<IoLogOut />} color="white" bgColor={'black'} _hover={{ bgColor: 'black' }} _active={{ bgColor: 'black' }}>
                 Logout
               </Button>
             </>

@@ -1,10 +1,11 @@
-import { Heading, Container, Button, Box, Stack, Text, Flex } from '@chakra-ui/react';
+import { Heading, Container, Button, Stack, Text, shouldForwardProp, chakra } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { login, reset } from '../features/auth/authSlice';
 import ShortFormControl from '../components/ShortFormControl';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { motion, isValidMotionProp } from 'framer-motion';
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -46,8 +47,8 @@ function Login() {
   }
 
   return (
-    <Container display="flex" alignItems="center" justifyContent="center" maxW="md" py="4" minH="100vh">
-      <Box shadow="md" p="8" maxW="2xl" margin="auto" flexBasis={'md'}>
+    <Container display="flex" alignItems="center" justifyContent="center" maxW="md" h="85vh">
+      <ChakraBox initial={{ y: 20 }} animate={{ y: 0 }} shadow="md" p="8" maxW="2xl" flexBasis={'md'} borderWidth="1px">
         <Heading as="h3" size="lg" textAlign="center" mb="5">
           Login
         </Heading>
@@ -63,9 +64,13 @@ function Login() {
             LOGIN
           </Button>
         </form>
-      </Box>
+      </ChakraBox>
     </Container>
   );
 }
+
+const ChakraBox = chakra(motion.div, {
+  shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),
+});
 
 export default Login;
