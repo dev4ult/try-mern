@@ -45,7 +45,7 @@ function Dashboard() {
         New Goal
       </Button>
       <Flex flexWrap="wrap" gap="15px" mt="5">
-        <motion.div transition={{ staggerChildren: 0.5 }}>{mapGoalCards()}</motion.div>
+        {mapGoalCards()}
       </Flex>
     </Container>
   );
