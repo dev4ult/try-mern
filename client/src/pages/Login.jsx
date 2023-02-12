@@ -54,7 +54,7 @@ function Login() {
         <Text textAlign="center" my="5">
           Lorem ipsum dolor sit amet.
         </Text>
-        <form method="POST" action="/register" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <Stack spacing="4">
             <ShortFormControl label="Email" type="email" name="email" value={email} onChange={handleChange} />
             <ShortFormControl label="Password" type="password" name="password" value={password} onChange={handleChange} />

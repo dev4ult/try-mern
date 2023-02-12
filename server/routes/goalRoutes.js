@@ -3,7 +3,9 @@ import { getGoals, updateGoals, deleteGoals, allGoals, setGoals } from '../contr
 import { authenticate } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
-router.route('/').get(authenticate, getGoals).post(authenticate, setGoals);
+router.route('/').get(allGoals).post(authenticate, setGoals);
+
+router.get('/myGoals', authenticate, getGoals);
 
 router.route('/:id').delete(authenticate, deleteGoals).put(authenticate, updateGoals);
 

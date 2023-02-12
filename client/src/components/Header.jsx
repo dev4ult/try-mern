@@ -1,5 +1,5 @@
-import { IoHome, IoLogIn, IoPerson, IoLogOut, IoPersonCircle } from 'react-icons/io5';
-import { Link, HStack, Flex, Container, useSlider, Button } from '@chakra-ui/react';
+import { IoLogIn, IoPerson, IoLogOut, IoPersonCircle } from 'react-icons/io5';
+import { Link, HStack, Flex, Container, Button } from '@chakra-ui/react';
 import { Link as RTDLink, useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,7 +20,7 @@ const Header = () => {
     <Container maxW="5xl" py="4">
       <Flex gap="5" justifyContent={'space-between'}>
         <NavLink as={RTDLink} to="/">
-          <IoHome /> Homepage
+          GETGoals
         </NavLink>
         <HStack spacing="5">
           {user ? (

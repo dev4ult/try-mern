@@ -65,7 +65,8 @@ function Register() {
         <Text my="5" textAlign="center">
           Lorem ipsum dolor sit amet consectetur adipisicing.
         </Text>
-        <form method="POST" action="/register" onSubmit={handleSubmit}>
+        <Divider mb="5" />
+        <form onSubmit={handleSubmit}>
           <Stack spacing="4">
             <Stack direction={['column', 'row']} spacing="7">
               <ShortFormControl label="Name" name="name" value={name} onChange={handleChange} />

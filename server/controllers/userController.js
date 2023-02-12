@@ -58,7 +58,8 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const userProfile = asyncHandler(async (req, res) => {
-  const { _id, name, email } = await userModel.findById(req.user.id);
+  const { _id, name, email } = req.user;
+
   res.status(200).json({
     id: _id,
     name,
