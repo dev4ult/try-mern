@@ -32,8 +32,10 @@ const registerUser = asyncHandler(async (req, res) => {
     password: hashedPass,
   });
   if (user) {
+    const { name, email } = user;
     res.status(200).json({
-      ...user,
+      name,
+      email,
       token: createToken(user._id),
     });
   } else {
@@ -48,7 +50,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await userModel.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.status(200).json({ user, token: createToken(user._id) });
+    res.status(200).json({ name: user.name, email, token: createToken(user._id) });
   } else {
     res.status(400);
     throw new Error('Invalid email or password');

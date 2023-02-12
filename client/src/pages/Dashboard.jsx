@@ -1,7 +1,13 @@
+import { Container, Heading } from '@chakra-ui/react';
+
 function Dashboard() {
   return (
     <>
-      <h3>dashboard</h3>
+      <Container>
+        <Heading textAlign="center" textTransform="uppercase">
+          dashboard
+        </Heading>
+      </Container>
     </>
   );
 }

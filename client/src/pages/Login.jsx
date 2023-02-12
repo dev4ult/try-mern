@@ -1,8 +1,12 @@
 import { Heading, Container, Button, Box, Stack, Text, Flex } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { login, reset } from '../features/auth/authSlice';
 import ShortFormControl from '../components/ShortFormControl';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
-function login() {
+function Login() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -19,8 +23,26 @@ function login() {
     }));
   }
 
+  const { user, isLoading, isError, isSuccesfull, message } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccesfull || user) {
+      navigate('/');
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccesfull, message]);
+
   function handleSubmit(e) {
     e.preventDefault();
+    const userData = { email, password };
+    dispatch(login(userData));
   }
 
   return (
@@ -35,7 +57,7 @@ function login() {
         <form method="POST" action="/register" onSubmit={handleSubmit}>
           <Stack spacing="4">
             <ShortFormControl label="Email" type="email" name="email" value={email} onChange={handleChange} />
-            <ShortFormControl label="Password" type="password" value={password} onChange={handleChange} />
+            <ShortFormControl label="Password" type="password" name="password" value={password} onChange={handleChange} />
           </Stack>
           <Button type="submit" w="full" mt="10" bgColor="black" color="white" _hover={`bgColor: black`} _active={'bgColor: black'}>
             LOGIN
@@ -46,4 +68,4 @@ function login() {
   );
 }
 
-export default login;
+export default Login;
