@@ -1,25 +1,27 @@
 import asyncHandler from 'express-async-handler';
 import goalModel from '../models/goalModel.js';
-import userModel from '../models/userModel.js';
+import moment from 'moment/moment.js';
+
+function getFormattedGoals(data) {
+  return data.map((goal) => {
+    const { _id, text, createdAt } = goal;
+    const fd = moment(createdAt).format('Do MMMM  YYYY');
+    return { id: _id, user: goal.user.name, text, createdAt: fd };
+  });
+}
 
 const getGoals = asyncHandler(async (req, res) => {
   const data = await goalModel.find({ user: req.user.id });
 
-  if (!data) {
-    res.status(400);
-    throw new Error('unknown id selected');
-  }
+  const goalData = getFormattedGoals(data);
 
-  res.status(200).json(data);
+  res.status(200).json(goalData);
 });
 
 const allGoals = asyncHandler(async (req, res) => {
   const data = await goalModel.find({}).populate('user');
 
-  const goalData = data.map((goal) => {
-    const { _id, text, createdAt } = goal;
-    return { id: _id, user: goal.user.name, text, createdAt };
-  });
+  const goalData = getFormattedGoals(data);
 
   res.status(200).json(goalData);
 });
@@ -37,7 +39,11 @@ const setGoals = asyncHandler(async (req, res) => {
     text,
   });
 
-  res.redirect('/api/goals');
+  const data = await goalModel.find({}).populate('user');
+
+  const goalData = getFormattedGoals(data);
+
+  res.status(200).json(goalData);
 });
 
 const updateGoals = asyncHandler(async (req, res) => {
@@ -53,13 +59,15 @@ const updateGoals = asyncHandler(async (req, res) => {
     throw new Error('User not authorized');
   }
 
-  const updateGoals = await goalModel.findByIdAndUpdate(req.params.id, req.body, {
+  await goalModel.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
 
-  console.log(updateGoals);
+  const data = await goalModel.find({ user: req.user.id });
 
-  res.redirect('/api/goals');
+  const goalData = getFormattedGoals(data);
+
+  res.status(200).json(goalData);
 });
 
 const deleteGoals = asyncHandler(async (req, res) => {
@@ -75,11 +83,13 @@ const deleteGoals = asyncHandler(async (req, res) => {
     throw new Error('User not authorized');
   }
 
-  const result = await goalModel.findByIdAndRemove(req.params.id);
+  await goalModel.findByIdAndRemove(req.params.id);
 
-  console.log(result);
+  const data = await goalModel.find({ user: req.user.id });
 
-  res.redirect('/api/goals');
+  const goalData = getFormattedGoals(data);
+
+  res.status(200).json(goalData);
 });
 
 export { allGoals, getGoals, setGoals, updateGoals, deleteGoals };

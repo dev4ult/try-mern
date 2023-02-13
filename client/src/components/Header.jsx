@@ -4,6 +4,7 @@ import { Link as RTDLink, useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../features/auth/authSlice';
+import { everyoneGoals, myGoals } from '../features/goal/goalSlice';
 
 const Header = () => {
   const { user } = useSelector((state) => state.auth);
@@ -28,7 +29,7 @@ const Header = () => {
               <NavLink as={RTDLink} to="/profile">
                 <IoPersonCircle /> Profile
               </NavLink>
-              <Button onClick={handleLogout} leftIcon={<IoLogOut />} color="white" bgColor={'black'} _hover={{ bgColor: 'black' }} _active={{ bgColor: 'black' }}>
+              <Button onClick={handleLogout} fontWeight="400" leftIcon={<IoLogOut />} color="white" bgColor={'black'} _hover={{ bgColor: 'black' }} _active={{ bgColor: 'black' }}>
                 Logout
               </Button>
             </>

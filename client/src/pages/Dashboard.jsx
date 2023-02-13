@@ -1,36 +1,51 @@
-import { Button, Container, Spinner, Text, shouldForwardProp, chakra } from '@chakra-ui/react';
-import { everyoneGoals } from '../features/goal/goalSlice';
-import GoalCard from '../components/GoalCard';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { motion, isValidMotionProp } from 'framer-motion';
+import { Container, Spinner, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { everyoneGoals, newGoal } from '../features/goal/goalSlice';
+import { toast } from 'react-toastify';
+
+// componentes
+import GoalStack from '../components/GoalStack';
+import StyledModal from '../components/StyledModal';
+import ShortFormControl from '../components/ShortFormControl';
+import DashboardButton from '../components/DashboardButton';
 
 function Dashboard() {
+  const [textForm, setTextForm] = useState('');
   const { goals, isLoading } = useSelector((state) => state.goal);
+  const { user } = useSelector((state) => state.auth);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(everyoneGoals());
   }, []);
 
-  const mapGoalCards = () => {
-    return goals.map((goal) => (
-      <GoalCard key={goal.id}>
-        <Text fontWeight="semibold" fontSize="xl" textTransform="capitalize">
-          {goal.text}
-        </Text>
-        <Text mt="3">{goal.user}</Text>
-        <Text color="blackAlpha.500">{goal.createdAt}</Text>
-      </GoalCard>
-    ));
-  };
+  function handleText(e) {
+    const text = e.target.value;
+    setTextForm(text);
+  }
 
-  if (isLoading) {
-    return (
-      <Container py="4" textAlign="center">
-        <Spinner mx="auto" />
-      </Container>
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!textForm) {
+      toast.error('Can not add empty text field as a new goal');
+      return;
+    }
+
+    const { token } = user;
+
+    dispatch(
+      newGoal({
+        text: textForm,
+        token,
+      })
     );
+
+    setTextForm('');
   }
 
   return (
@@ -41,27 +56,29 @@ function Dashboard() {
       <Text maxW="xl" my="2">
         Set your own goals and show to other people what you want to be, get, or do in the future
       </Text>
-      <Button rounded="sm" color="white" colorScheme="blackAlpha">
-        New Goal
-      </Button>
-      <ChakraFlex variants={container} initial="hidden" animate="show" display="flex" flexWrap="wrap" gap="15px" mt="5">
-        {mapGoalCards()}
-      </ChakraFlex>
+      {user ? (
+        <>
+          <DashboardButton onClick={onOpen}>New Goal</DashboardButton>
+          <StyledModal title="Post Your Goal" {...{ isOpen, onClose }}>
+            <form onSubmit={handleSubmit}>
+              <VStack spacing="5" w="fit-content" minW="sm" alignItems="flex-end" mb="3">
+                <ShortFormControl label="New Goal" variant="flushed" name="text" value={textForm} onChange={handleText} />
+                <DashboardButton type="submit" onClick={onClose}>
+                  Post
+                </DashboardButton>
+              </VStack>
+            </form>
+          </StyledModal>
+        </>
+      ) : (
+        <DashboardButton onClick={navigate.bind(null, '/login')}>Login to Post</DashboardButton>
+      )}
+      <Text mt="10" mb="5" fontWeight="semibold" fontSize="xl">
+        Everyone dreams
+      </Text>
+      {isLoading ? <Spinner /> : <GoalStack data={goals} />}
     </Container>
   );
 }
-
-const ChakraFlex = chakra(motion.div, {
-  shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),
-});
-
-const container = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
 
 export default Dashboard;

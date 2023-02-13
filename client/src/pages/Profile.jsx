@@ -1,59 +1,53 @@
-import { useEffect, useState } from 'react';
-import { Box, Button, Container, Text, VStack } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { Container, Text, Spinner, Table, TableContainer, Thead, Tr, Th, Tbody, Td, TableCaption } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import ShortFormControl from '../components/ShortFormControl';
+import GoalStack from '../components/GoalStack';
+import { myGoals } from '../features/goal/goalSlice';
 
 function Profile() {
   const { user } = useSelector((state) => state.auth);
+  const { goals, isLoading } = useSelector((state) => state.goal);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-  });
-
-  const { name, email } = formData;
+  useEffect(() => {
+    dispatch(myGoals(user.token));
+  }, []);
 
   useEffect(() => {
     if (!user) {
       navigate('/login');
-    } else {
-      setFormData({
-        name: user.name,
-        email: user.email,
-      });
     }
   }, [user]);
-
-  function handleChange(e) {
-    const { name, value } = e.target;
-
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-  }
 
   return (
     <>
       <Container maxW="5xl" py="4">
-        <form action="" onSubmit={handleSubmit}>
-          <VStack spacing="5" w="fit-content" minW="sm" alignItems="flex-end">
-            <ShortFormControl name="name" variant="flushed" value={name} onChange={handleChange} />
-            <ShortFormControl name="email" variant="flushed" value={email} onChange={handleChange} />
-            <Button variant="outline" ml="auto">
-              Save Changes
-            </Button>
-          </VStack>
-        </form>
-        <Box shadow="md" rounded="xl" w="fit-content" p="5">
-          <h1>test</h1>
-        </Box>
+        <TableContainer borderWidth="1px" w="fit-content" shadow="sm">
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>Profile</Th>
+                <Th></Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr>
+                <Td>Name</Td>
+                <Td>{user.name}</Td>
+              </Tr>
+              <Tr>
+                <Td>Email</Td>
+                <Td>{user.email}</Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </TableContainer>
+        <Text mt="10" mb="5" fontWeight="semibold" fontSize="xl">
+          My Goals
+        </Text>
+        {isLoading ? <Spinner /> : <GoalStack data={goals} iconButton={true} />}
       </Container>
     </>
   );

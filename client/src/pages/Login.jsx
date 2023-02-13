@@ -60,7 +60,7 @@ function Login() {
             <ShortFormControl label="Email" type="email" name="email" value={email} onChange={handleChange} />
             <ShortFormControl label="Password" type="password" name="password" value={password} onChange={handleChange} />
           </Stack>
-          <Button type="submit" w="full" mt="10" bgColor="black" color="white" _hover={`bgColor: black`} _active={'bgColor: black'}>
+          <Button type="submit" w="full" mt="10" bgColor="black" color="white" _hover={{ bgColor: 'black' }} _active={{ bgColor: 'black' }}>
             LOGIN
           </Button>
         </form>
