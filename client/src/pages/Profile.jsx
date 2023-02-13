@@ -12,38 +12,41 @@ function Profile() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(myGoals(user.token));
-  }, []);
-
-  useEffect(() => {
     if (!user) {
       navigate('/login');
+    } else {
+      dispatch(myGoals(user.token));
     }
-  }, [user]);
+  }, []);
 
   return (
     <>
       <Container maxW="5xl" py="4">
-        <TableContainer borderWidth="1px" w="fit-content" shadow="sm">
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Profile</Th>
-                <Th></Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td>Name</Td>
-                <Td>{user.name}</Td>
-              </Tr>
-              <Tr>
-                <Td>Email</Td>
-                <Td>{user.email}</Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </TableContainer>
+        {user ? (
+          <TableContainer borderWidth="1px" w="fit-content" shadow="sm">
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Profile</Th>
+                  <Th></Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Td>Name</Td>
+                  <Td>{user.name}</Td>
+                </Tr>
+                <Tr>
+                  <Td>Email</Td>
+                  <Td>{user.email}</Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </TableContainer>
+        ) : (
+          ''
+        )}
+
         <Text mt="10" mb="5" fontWeight="semibold" fontSize="xl">
           My Goals
         </Text>
